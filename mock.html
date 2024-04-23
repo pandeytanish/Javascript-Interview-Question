@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // for (let i = 0 ; i<=5 ;i++) {
+        //     for (let k = 0 ; k<=5-i ; k++) {
+        //         document.write("&nbsp")
+        //     }
+        //     for (let j = 0 ; j<=i ; j++) {
+        //         document.write("*")
+        //     }
+        //     document.write("<br>")
+        // }
+    
+
+        // for (let i = 0 ; i<=5 ; i++) {
+        //     for (let k = 0 ; k<=i ; k++) {
+        //         document.write("&nbsp")
+        //     }
+        //     for(let j=0 ; j<=5 ; j++) {
+        //         document.write("*",)
+        //     }
+        //     document.write("<br>")
+        // }
+
+
+        // const num = [
+        //   {number : 15},
+        //   {number : 21},
+        //   {number : 42}
+
+        // ]
+
+        // const divisibility = num.filter(obj => obj.number % 3 == 0)
+
+        // console.log(divisibility)
+
+// function  Palindrome(str) {
+//     let j = str.length - 1
+//     for (let i = 0 ; i < str.length / 2; i++) {
+//         if (str[i] != str[j]) {
+//             return false
+//         }
+//         j--;
+//     }
+//     return true
+// }
+// let str1 = "rewa"
+// console.log(Palindrome(str1));
+
+// const number = parseInt(prompt('Enter the number of terms: '));
+// let n1 = 0, n2 = 1, nextTerm;
+
+// document.write('Fibonacci Series:');
+
+// for (let i = 1; i <= number; i++) {
+//     document.write(n1);
+//     nextTerm = n1 + n2;
+//     n1 = n2;
+//     n2 = nextTerm;
+// }
+
+//  function PrimeNumber(n)  {
+//     if (n<2) {
+//         document.write("enter number greater than 2")
+//     }
+//     for (let i = 2 ; i<n ; i++) {
+//         if (n % i == 0) {
+//             console.log(i,"Not a prime number")
+//         }
+//         else {
+//             console.log(i,"prime number")
+//         }
+//     }
+//  }
+//  PrimeNumber(10)
+
+
+let sum = 0;
+let number = 140;
+let n = number;
+
+while (n !== 0) {
+    let r = n % 10;
+    sum += r * r * r;
+    n = parseInt(n / 10) ; 
+}
+
+if (sum === number) {
+    document.write(number + " is an Armstrong number");
+} else {
+    document.write(number + " is invalid");
+}
+
+    </script>
+</body>
+</html>

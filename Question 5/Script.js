@@ -1,3 +1,3 @@
-var h1 =  document.getElementsByTagName('h1');
-h1.textcontent = 'js';
-   
+var head2 = document.getElementById('heading');
+head2.innerHTML = '<h1>hello world</h1>';
+console.log(head2);

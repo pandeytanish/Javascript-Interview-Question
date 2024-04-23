@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // even no. / odd number
+
+        // let a = prompt("enter number")
+
+        // if (a % 2 == 0) {
+        //     document.write("even number")
+        // }
+        // else {
+        //     document.write("odd number")
+        // }
+
+        // function prime(a){
+        //         let c =0;
+        //         for(let i=1; i<=a; i++){
+        //             if(a%i == 0){
+        //                         c++
+        //                 }
+        //         }
+
+        //         if(c<=2){
+        //                 document.write("It's Prime No.")
+        //         }
+        //         else{
+        //                 document.write("It's not Prime No.")
+        //         }
+        // }
+        // prime(11)
+
+
+        // let no = 4;
+        //         let temp = 0;
+        //         for (let i = 2; i <= no - 1; i++) {
+        //             if (no % i == 0) {
+        //                 temp++;
+        //             }
+        //         }
+        //         if (temp== 0) {
+        //             document.write("it's a prime number")
+        //         }
+        //         else {
+        //             document.write("it's not a prime number")
+        //         }
+
+        // program to generate fibonacci series up to n terms
+
+// take input from the user
+const number = parseInt(prompt('Enter the number of terms: '));
+let n1 = 0, n2 = 1, nextTerm;
+
+document.write('Fibonacci Series:');
+
+for (let i = 1; i <= number; i++) {
+    document.write(n1);
+    nextTerm = n1 + n2;
+    n1 = n2;
+    n2 = nextTerm;
+}
+
+function isPalindrome(str) {
+	let j = str.length - 1
+	for (let i = 0; i < str.length / 2; i++) {
+		if (str[i] != str[j]) {
+			return false;
+		}
+		j--;
+	}
+	return true;
+}
+
+let str1 = "racecar";
+let str2 = "nitin";
+let str3 = "Rama";
+
+console.log(isPalindrome(str1));
+console.log(isPalindrome(str2));
+console.log(isPalindrome(str3));
+
+    </script>
+</body>
+</html>
