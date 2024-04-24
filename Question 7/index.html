@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Question 40</title>
-    <script src="script.js"></script>
+    <!-- <script src="script.js"></script> -->
 </head>
 <body>
-    <h1>Add Element in dynamic manner</h1>
+    <h1>
+        GeeksforGeeks
+    </h1>
+    <div id="innerdiv"></div>
+    <button id="mybutton">
+        click me
+    </button>
+    <script>
+        document.getElementById("mybutton").
+            addEventListener("click", function () {
+         document.getElementById("innerdiv").
+            innerHTML += "<h3>Hello geeks</h3>";
+        });
+        </script>
 </body>
 </html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+
+// function reverseString(str) {
+//     let a = "" ;
+//     for (let i = str.length - 1 ; i>=0 ; i--){
+//         a += str[i];
+//     }
+//     return a ;
+// }
+// const  c = prompt("enter string");
+// const result  = reverseString(c) ; 
+// console.log(result) ;
+
+// let a = [1,2,3,4,5,6,7,8]; 
+// let result = Array.isArray(a)
+// console.log(result);
+
+// let a = "apple"
+// let b = 2 ;
+// console.log(Number.isInteger(b))
+
+
+// let arr = [1,2,3,4]
+// let newArr = arr.concat(arr)
+// console.log(newArr)
+
+// function mul(x) {
+//     return function(y) {
+//         return function(z) {
+//             return x * y * z;
+//         };
+//     };
+// }
+
+// document.write(mul(2)(3)(4)); 
+
+// function createBase(baseValue) {
+//   return function (num) {
+//     return baseValue + num;
+//   };
+// }
+// // Example usage:
+// const addSix = createBase(6);
+
+// console.log(addSix(10)); // Output: 16
+// console.log(addSix(21)); // Output: 27
+
+// function anagrams(a,b) {
+//     const normal1 =  a.toLowerCase();
+//     const normal2 =  a.toLowerCase();
+
+//     const update1 = normal1.split('').sort().join()
+//     const update2 = normal2.split('').sort().join()
+//     return update1 == update2
+// }
+// a = "mary";
+// b = "army";
+// console.log(anagrams(a,b))
+
+
+// function outer () {
+//     let a = "hello"
+//     function inner() {
+//         console.log(a)
+//     }
+//     return inner 
+// }
+// const fun = outer()
+// fun()
+
+// console.log(Boolean(0))
+
+// function mul (x) {
+//     return function (y) {
+//        return x*y
+//     };
+// }
+// const result = mul(5)(6)
+// console.log(result)
+
+// const array = [1, 2, 3, 4, 5];
+
+// for (let i = 0; i < array.length; i++) {
+//   console.log(array[i]);
+// }
+
+// let arr = [1,3,345,67]
+// console.log(arr.length)
+// console.log(arr[2])
+//  arr[2] = 23
+//  console.log(arr.pop())
+//  console.log(arr)
+
+// const a = [1,2,3,4,5,6,7]
+
+// let element = 132
+
+// const found = a.find (item => item === element)
+// if (found != element) {
+//     console.log("false")
+// }
+// else {
+//     console.log("true")
+// }
+// sorting with loop
+// var Arr = [1, 7, 2, 8, 3, 4, 5, 0, 9];
+
+// for (var i = 1; i < Arr.length; i++)
+//     for (var j = 0; j < i; j++)
+//         if (Arr[i] < Arr[j]) {
+//             var x = Arr[i];
+//             Arr[i] = Arr[j];
+//             Arr[j] = x;
+//         }
+
+// console.log(Arr);
+
+// push pop
+// const a = [] ;
+
+// a.push(19)
+// a.push(13)
+// a.push(32)
+// console.log(a)
+
+// a.pop()
+// console.log(a)
+
+// Define the two numbers
+// const number1 = 8;
+// const number2 = 7;
+
+// // Find the sum
+// const sum = number1 + number2;
+
+// // Initialize an array
+// let numbersArray = [];
+
+// // Push the sum into the array
+// numbersArray.push(sum);
+
+// // Output the array
+// console.log(numbersArray); // Output: [15]
+
+
+// prime Number
+
+//  function PrimeNumber(n)  {
+//     if (n<2) {
+//         document.write("enter number greater than 2")
+//     }
+//     for (let i = 2 ; i<n ; i++) {
+//         if (n % i == 0) {
+//             console.log(i,"Not a prime number")
+//         }
+//         else {
+//             console.log(i,"prime number")
+//         }
+//     }
+//  }
+//  PrimeNumber(10);
+
+// const number = 5
+// let n1 = 0, n2 = 1, nextTerm;
+
+// document.write('Fibonacci Series:');
+
+// for (let i = 1; i <= number; i++) {
+//     document.write(n1);
+//     nextTerm = n1 + n2;
+//     n1 = n2;
+//     n2 = nextTerm;
+// }
+
+// function  Palindrome(str) {
+//     let j = str.length - 1
+//     for (let i = 0 ; i < str.length / 2; i++) {
+//         if (str[i] != str[j]) {
+//             return false
+//         }
+//         j--;
+//     }
+//     return true
+// }
+// let str1 = "nitin"
+// console.log(Palindrome(str1));
+
+// let arr = [1,2,3,4,5,6]
+// for (let i = 0 ; i<arr.length; i++){
+//     console.log(arr[i])
+// }
+
+// const array = [1, 2, 3, 4, 5];
+
+// for (let i = 0; i < array.length; i++) {
+//   console.log(array[i]);
+// }
+
+// let arr = [5,1,9,3,6,0]
+//  console.log(arr.sort())
+// for(let i = 0 ; i<arr.length ; i++){
+//     for(let j = 0 ; j<i ; j++) {
+//         if (arr[i] <arr[j]) {
+//             var x =  arr[i];
+//             arr[i] = arr[j] ;
+//             arr[j] = x
+//         }
+//     }
+// }
+// console.log(arr)
+
+// var Arr = [1, 7, 2, 8, 3, 4, 5, 0, 9];
+
+// for (var i = 1; i < Arr.length; i++)
+//     for (var j = 0; j < i; j++)
+//         if (Arr[i] < Arr[j]) {
+//             var x = Arr[i];
+//             Arr[i] = Arr[j];
+//             Arr[j] = x;
+//         }
+
+// console.log(Arr);
+
+// let arr = ["apple", "mango", "apple",
+// 		"orange", "mango", "mango"];
+
+// function removeDuplicates(arr) {
+// 	return [...new Set(arr)];
+// }
+ 
+    </script>
+</body>
+</html>
