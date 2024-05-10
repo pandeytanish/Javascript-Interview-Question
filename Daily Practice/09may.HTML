@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <script>
+
         // Common  elements between two arrays
         // let arr1 = [1,2,3,4,5,6,7] 
         // let arr2 = [2,1,4,0,9,99,96,43]
@@ -15,60 +18,89 @@
 
         // sort an array of string based on their length form sortest to longest ?
 
-
-
         // Fibonacci series
-    // const number = 5
-    // let n1 = 0, n2 = 1, nextTerm;
+        // const number = 5
+        // let n1 = 0, n2 = 1, nextTerm;
 
-    // document.write('Fibonacci Series:');
+        // document.write('Fibonacci Series:');
 
-    // for (let i = 1; i <= number; i++) { 
-    // document.write(n1);
-    // nextTerm = n1 + n2;
-    // n1 = n2;
-    // n2 = nextTerm;
-    // }
+        // for (let i = 1; i <= number; i++) { 
+        // document.write(n1);
+        // nextTerm = n1 + n2;
+        // n1 = n2;
+        // n2 = nextTerm;
+        // }
 
-// function  Palindrome(str) {
-//     let j = str.length - 1
-//     for (let i = 0 ; i < str.length / 2; i++) {
-//         if (str[i] != str[j]) {
-//             return false
-//         }
-//         j--;
-//     }
-//     return true
-// }
-// let str1 = "nitin"
-// console.log(Palindrome(str1));
+        // function  Palindrome(str) {
+        //     let j = str.length - 1
+        //     for (let i = 0 ; i < str.length / 2; i++) {
+        //         if (str[i] != str[j]) {
+        //             return false
+        //         }
+        //         j--;
+        //     }
+        //     return true
+        // }
+        // let str1 = "nitin"
+        // console.log(Palindrome(str1));
 
-// Remove dublicates 
+        // Check array is asending or not
+        function checkSorted(arr) {
+            const sortArr = [...arr].sort((a, b) => a - b);
+            return JSON.stringify(arr) === JSON.stringify(sortArr);
 
-// let arr = ["apple", "mango", "apple",
-// 		"orange", "mango", "mango"];
-
-// function removeDuplicates(arr) {
-// 	return [...new Set(arr)];
-// }
-
-// console.log(removeDuplicates(arr));
-
-// largest number
-function largestElement(arr) {
-    let largestNum = arr[0];
-    for (let i = 1; i < arr.length; i++) {
-        if (arr[i] > largestNum) {
-            largestNum = arr[i];
         }
-    }
-    return largestNum;
-}
 
-const num1 = [10, 15, 18, 20, 23];
-const result = largestElement(num1);
+        const arr1 = [32, 39, 48, 56];
+        const arr2 = [22, 65, 1, 39];
 
-console.log("The largest element in the array is:" + result); 
+        console.log(checkSorted(arr1));
+        console.log(checkSorted(arr2));
+
+
+        // Remove dublicates 
+
+        // let arr = ["apple", "mango", "apple",
+        // 		"orange", "mango", "mango"];
+
+        // function removeDuplicates(arr) {
+        // 	return [...new Set(arr)];
+        // }
+        // console.log(removeDuplicates(arr));
+
+        // largest number
+        // function largestElement(arr) {
+        //     let largestNum = arr[0];
+        //     for (let i = 1; i < arr.length; i++) {
+        //         if (arr[i] > largestNum) {
+        //             largestNum = arr[i];
+        //         }
+        //     }
+        //     return largestNum;
+        // }
+        // const num1 = [10, 15, 18, 20, 23];
+        // const result = largestElement(num1);
+        // console.log("The largest element in the array is:" + result);
+
+
+
+        // Factorial 
+
+        // let num = prompt("Enter any Number")
+        // let fact = 1;
+        // if (num == 0) {
+        //     document.write("Factorial is 1")
+        // }
+        // else if (num < 0) {
+        //     document.write("Not possible ")
+        // }
+        // else {
+        //     for (let i = 1; i <= num; i++) {
+        //         fact = fact * i
+        //     }
+        //     document.write(`Factorial of ${num} is ${fact}`)
+        // }
     </script>
 </body>
+
 </html>
