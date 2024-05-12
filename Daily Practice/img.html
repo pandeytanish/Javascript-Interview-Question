@@ -1,0 +1,159 @@
+import React from 'react'
+import { useState , useEffect } from 'react';
+import axios from 'axios';
+
+
+const RoomType = () => {
+  // const dummyData = [
+  //   {
+  //     id: 1,
+  //     name: "DELUX",
+  //     category: "AC"
+
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "premium delux",
+  //     category: "AC"
+
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Single Bed",
+  //     category: "NON AC"
+
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Double Bed",
+  //     category: "AC"
+
+  //   }
+  // ]
+  const [data, setData] = useState([]);
+    useEffect(() => {
+        axios.get('http://192.168.29.85:3000/room_types')
+            .then(response => {
+                setData(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+  // const [searchQuery, setSearchQuery] = useState('');
+  // const [filteredData, setFilteredData] = useState();
+
+  // const handleSearch = (e) => {
+  //   const value = e.target.value;
+  //   setSearchQuery(value);
+  //   const filtered = dummyData.filter((item) =>
+  //     item.name.toLowerCase().includes(value.toLowerCase())
+  //   );
+  //   setFilteredData(filtered);
+  // };
+  // const [inputValue, setInputValue] = useState('');
+
+  // const handleInputChange = (event) => {
+  //     setInputValue(event.target.value);
+  // };
+
+  // const handleSubmit = (event) => {
+  //     event.preventDefault();
+  //     if (inputValue.trim() === '') {
+  //         alert('Input field cannot be empty!');
+  //         return;
+  //     }
+  //   }
+  return (
+    <>
+      <div className='lg:h-[100vh] w-fit lg:w-full h-fit  bg-slate-200 '>
+      <div className='flex items-baseline gap-2 h-[40px] w-full'>
+        <h1 className='lg:text-[24px] sm:text-lg font-normal'>Room Type</h1>
+      </div>
+        <div className='h-[150px] lg:w-[50%] sm:w-[80%] bg-white p-2 border-t-4  border-[#0089db] mt-1'>
+          <form  >
+            <label className='mb-4 text-[14px] font-medium'>Type <b className='text-[14px] font-thin text-red-600'>*Required</b></label>
+            <br />
+            <input value={inputValue} onChange={handleInputChange}  className='h-[30px] lg:w-[100%] p-1 text-[12px] sm:w-[80%]  border-2 pl-2 mt-3 mb-4' placeholder='Room Type' type="text" />
+            <br />
+            <button type='submit' onClick={handleSubmit} className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                  Submit
+                </span>
+              </button>
+            <button type='submit' className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                  Reset
+                </span>
+              </button>
+          </form>
+        </div>
+
+        <div className='h-fit w-[100%]  bg-slate-50 mt-6 border-t-4  border-[#0089db] pt-2 '>
+          <div className='flex items-center justify-between px-4'>
+            <div className='flex gap-2'>
+              <h1 className='font-semibold text-[14px]'>Show</h1>
+              <select className='border-2 text-[14px]' name="" id="">
+                <option value="">10</option>
+                <option value="">25</option>
+                <option value="">50</option>
+                <option value="">100</option>
+              </select>
+              <h1 className='font-semibold text-[14px]'>entries</h1>
+            </div>
+            <div className='flex gap-1 '>
+              <h1 className='font-semibold text-[14px]'>Search:</h1>
+              <input className='border-2' type='search' onChange={handleSearch} />
+            </div>
+          </div>
+          <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+            <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+              <tr>
+                <th scope='col' className='px-6 py-1'>
+                  ID
+                </th>
+                <th scope='col' className='px-6 py-1'>
+                  ROOM Type
+                </th>
+                <th scope='col' className='px-6 py-1'>
+                  Category
+                </th>
+                <th scope='col' className='px-6 py-1'>
+                  <span className='sr-only'>Edit</span>
+                </th>
+                <th scope='col' className='px-6 py-1'>
+                  <span className='sr-only'>DELETE</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredData.map((item) => (
+                <tr key={item.id} className='bg-white border-b  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'>
+                  <td className='px-1 pl-4 py-2 font-normal text-gray-900 whitespace-nowrap dark:text-white'>{item.id}</td>
+                  <td className='px-1 py-2 font-normal text-gray-900 whitespace-nowrap dark:text-white'>{item.name}</td>
+                  <td className='px-1 py-2 font-normal text-gray-900 whitespace-nowrap dark:text-white'>{item.category}</td>
+                  <td className='px-1 py-2 font-normal text-gray-900 whitespace-nowrap dark:text-white'><button className='bg-red-400  rounded-md h-[30px] w-[50px] mx-2 mt-2 text-white'>Edit</button></td>
+                  <td className='px-1 py-2 font-normal text-gray-900 whitespace-nowrap dark:text-white'><button className='bg-[#00c0ef]  rounded-md h-[30px] w-[50px] mx-2 mt-2 text-white'>Delete</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <nav className='flex  items-center justify-center mt-2 pb-2' aria-label="Page navigation example">
+            <ul class="inline-flex -space-x-px text-sm">
+              <li>
+                <a  href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-white bg-[#337ab7] border border-gray-300  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </>
+  )
+}
+export default RoomType;
