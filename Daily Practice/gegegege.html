@@ -1,0 +1,77 @@
+import React, { useState } from 'react';
+
+const RoomType = () => {
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [formData, setFormData] = useState({
+    room_type: ''
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://192.168.29.85:3000/room_types', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ room_type: formData.room_type })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+
+      setSuccess('Data posted successfully!');
+      setError('');
+      // Reset form data
+      setFormData({
+        room_type: ''
+      });
+    } catch (error) {
+      setError('Failed to submit form');
+      setSuccess('');
+    }
+  };
+
+  return (
+    <>
+      <div className='lg:h-[100vh] w-fit lg:w-full h-fit  bg-slate-200 '>
+        <div className='flex items-baseline gap-2 h-[40px] w-full'>
+          <h1 className='lg:text-[24px] sm:text-lg font-normal'>Room Type</h1>
+        </div>
+        <div className='h-[150px] lg:w-[50%] sm:w-[80%] bg-white p-2 border-t-4  border-[#0089db] mt-1'>
+          <form onSubmit={handleSubmit}>
+            <label className='mb-4 text-[14px] font-medium'>Type <b className='text-[14px] font-thin text-red-600'>*Required</b></label>
+            <br />
+            <input
+              onChange={(e) => setFormData({ ...formData, room_type: e.target.value })}
+              value={formData.room_type}
+              className='h-[30px] lg:w-[100%] p-1 text-[12px] sm:w-[80%]  border-2 pl-2 mt-3 mb-4'
+              placeholder='Room Type'
+              type="text"
+            />
+            <br />
+            <button type='submit' className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+              <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                Submit
+              </span>
+            </button>
+            <button type='button' onClick={() => {
+              setFormData({ room_type: '' });
+              setSuccess('');
+              setError('');
+            }} className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+              <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                Reset
+              </span>
+            </button>
+          </form>
+          {error && <div className="text-red-500">{error}</div>}
+          {success && <div className="text-green-500">{success}</div>}
+        </div>
+      </div>
+    </>
+  )
+}
+export default RoomType;
