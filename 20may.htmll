@@ -1,0 +1,188 @@
+  <Box sx={{display : 'flex', width: "100%"}}>
+      <Box sx={{width : '100%'}}>
+    <Box component="section" sx={{ p: 2, border: '1px solid grey' , width : '100%' }}>
+    <Box sx={{ p: 1, width : '60%' }} >
+   <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DemoContainer components={['DateTimeRangePicker']}>
+        <DateTimeRangePicker localeText={{ start: 'Check-in', end: 'Check-out' }} />
+        </DemoContainer>
+</LocalizationProvider>
+    </Box>
+    </Box>
+        <TableContainer sx={{width : '100%'}} component={Paper}>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Room Type</TableCell>
+                        <TableCell>Availability</TableCell>
+                        <TableCell>Price</TableCell>
+                        <TableCell>Quantity</TableCell>
+                        <TableCell>Addons</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {roomData.map((room, index) => (
+                        <TableRow key={index}>
+                            <TableCell>{room.type}</TableCell>
+                            <TableCell>{room.availability < 10 ? `0${room.availability}` : room.availability}</TableCell>
+                            <TableCell>₹ {room.price}</TableCell>
+                            <TableCell>
+                                <TextField 
+                                    type="number" 
+                                    InputProps={{ inputProps: { min: 0, max: room.availability } }}
+                                    size="small"
+                                />
+                                <Button variant="contained" size="small" style={{ marginLeft: '10px' }}>
+                                    ADD
+                                </Button>
+                            </TableCell>
+                            <TableCell>
+                                <IconButton color="primary">
+                                    <AddCircleOutlineIcon />
+                                </IconButton>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+        </Box>
+{/* <FormControl>
+  <input/>
+  <button>Submit</button>
+</FormControl> */}
+
+
+<Box
+      my={4}
+      display="flex"
+      justifyContent="right"
+      p={2}
+    >
+      <FormControl sx={{ width: '100%' }}>
+        <Typography variant='h6' gutterBottom>Guest Details</Typography>
+        
+        <TextField 
+          id="outlined-basic" 
+          label="Phone" 
+          variant="outlined" 
+          fullWidth 
+          margin="normal" 
+        />
+        
+        <Button 
+          variant='outlined' 
+          fullWidth 
+          margin="normal"
+        >
+          Attach Id
+        </Button>
+        
+        <TextField 
+          id="outlined-basic" 
+          label="Name" 
+          variant="outlined" 
+          fullWidth 
+          margin="normal" 
+        />
+        
+        <TextField 
+          id="outlined-basic" 
+          label="Email-Id" 
+          variant="outlined" 
+          fullWidth 
+          margin="normal" 
+        />
+        
+        <TextField 
+          id="outlined-basic" 
+          label="Reference Number" 
+          variant="outlined" 
+          fullWidth 
+          margin="normal" 
+        />
+        
+        <ButtonGroup 
+          fullWidth 
+          margin="normal"
+        >
+          <Button variant="outlined">Male</Button>
+          <Button variant="outlined">Female</Button>
+          <Button variant="outlined">Others</Button>
+        </ButtonGroup>
+        
+        <Button 
+         sx={{
+          marginLeft : "135px",
+          width : "150px",
+          marginTop : "10px",
+          marginBottom : "10px"
+        }}
+          variant="contained" 
+          fullWidth 
+          margin="normal"
+        >
+          Show More
+        </Button>
+
+        <Typography variant='h6' gutterBottom>Booking Info</Typography>
+
+        <Box sx={{ width: '100%', marginTop: 2 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <Select
+                label="Source"
+                fullWidth
+                defaultValue="Walkin"
+              >
+                <MenuItem value=""><em>None</em></MenuItem>
+                <MenuItem value="Walkin">Walkin</MenuItem>
+                {/* Add other options as needed */}
+              </Select>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Select
+                label="Food Choice"
+                fullWidth
+                defaultValue=""
+              >
+                <MenuItem value=""><em>None</em></MenuItem>
+                <MenuItem value="Veg">Veg</MenuItem>
+                <MenuItem value="Non-Veg">Non-Veg</MenuItem>
+                {/* Add other options as needed */}
+              </Select>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Select
+                label="Mode Of Travel"
+                fullWidth
+                defaultValue=""
+              >
+                <MenuItem value=""><em>None</em></MenuItem>
+                <MenuItem value="Air">Air</MenuItem>
+                <MenuItem value="Train">Train</MenuItem>
+                <MenuItem value="Car">Car</MenuItem>
+                {/* Add other options as needed */}
+              </Select>
+            </Grid>
+
+            <Grid item xs={6}>
+            <Select
+                label="Food Choice"
+                fullWidth
+                defaultValue=""
+              >
+                <MenuItem value=""><em>None</em></MenuItem>
+                <MenuItem value="Veg">Veg</MenuItem>
+                <MenuItem value="Non-Veg">Non-Veg</MenuItem>
+                {/* Add other options as needed */}
+              </Select>
+            </Grid>
+          </Grid>
+        </Box>
+      </FormControl>
+    </Box>
+    
+    </Box>
