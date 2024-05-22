@@ -1,0 +1,400 @@
+import * as React from 'react';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+import { DateTimeRangePicker } from '@mui/x-date-pickers-pro/DateTimeRangePicker';
+import { Button, ButtonGroup, FormControl, Typography, Stack } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableBody from '@mui/material/TableBody';
+import IconButton from '@mui/material/IconButton';
+import Switch from '@mui/material/Switch';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import InputLabel from '@mui/material/InputLabel';
+import { useState } from 'react';
+import { Modal } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import InputAdornment from '@mui/material/InputAdornment';
+import { useEffect } from 'react';
+import axios from 'axios';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  height: 350,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 1
+};
+
+const roomData = [
+  { type: 'Suite', availability: 1, price: 5000 },
+  { type: 'Dormitory', availability: 9, price: 1000 },
+  { type: 'Executive', availability: 5, price: 3200 },
+  { type: 'Super Deluxe', availability: 4, price: 2800 },
+  { type: 'Deluxe', availability: 10, price: 2200 },
+];
+
+export default function NewBooking() {
+
+  const [open, setOpen] = useState(false);
+  const [adultCount, setAdultCount] = useState(0);
+  const [childrenCount, setChildrenCount] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleIncrement = (setter, value) => () => setter(value + 1);
+  const handleDecrement = (setter, value) => () => setter(value > 0 ? value - 1 : 0);
+
+  useEffect(() => {
+    setTotal(adultCount + childrenCount);
+  }, [adultCount, childrenCount]);
+
+  useEffect(() => {
+    if (!open) {
+      setTotal(adultCount + childrenCount);
+    }
+  }, [open]);
+  const handleModalClose = () => {
+    setOpen(false);
+    setTotal(adultCount + childrenCount);
+    
+  };
+
+  const checkInUser = (event) => {
+    event.preventDefault() ;
+    const phone_number = event.target.phone_number.value;
+    const guest_name = event.target.guest_name.value;
+    const address = event.target.address.value;
+
+    axios.post('http://192.168.29.170:3000/check_ins' , {
+      phone_number,
+      guest_name,
+      address,
+    })
+    .then (response => {
+      console.log(response);
+    })
+    .catch (error => {
+      console.log(error);
+    })
+  }
+  return (
+    <>
+      <Box>
+        <Box sx={{ display: 'flex', width: "99%", margin: '0.2rem', }}>
+          <Box sx={{ p: 1, width: "70%" }}>
+            <Typography variant='h3'>Create Booking</Typography>
+            <Box sx={{ height: '100px', width: '100%', borderTop: '4px solid blue', marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} >
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DateTimeRangePicker']}>
+                  <DateTimeRangePicker localeText={{ start: 'Check-in', end: 'Check-out' }} />
+                </DemoContainer>
+              </LocalizationProvider>
+              <Box>
+                <TextField
+                  label={`Adults: ${adultCount} | Children: ${childrenCount} | Total: ${total}`}
+                  onClick={handleOpen}
+                  fullWidth
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+                <Modal open={open} onClose={handleClose}>
+                  <Box sx={style}>
+                    <Typography variant="h6" component="h2" gutterBottom>
+                      Counter Modal
+                    </Typography>
+                    <Box mt={2}>
+                      <Typography variant="subtitle1" gutterBottom>
+                        Adults
+                      </Typography>
+                      <Box display="flex" alignItems="center">
+                        <IconButton onClick={handleDecrement(setAdultCount, adultCount)}>
+                          <RemoveIcon />
+                        </IconButton>
+                        <Typography variant="h6" mx={2}>
+                          {adultCount}
+                        </Typography>
+                        <IconButton onClick={handleIncrement(setAdultCount, adultCount)}>
+                          <AddIcon />
+                        </IconButton>
+                      </Box>
+                    </Box>
+                    <Box mt={2}>
+                      <Typography variant="subtitle1" gutterBottom>
+                        Children
+                      </Typography>
+                      <Box display="flex" alignItems="center">
+                        <IconButton onClick={handleDecrement(setChildrenCount, childrenCount)}>
+                          <RemoveIcon />
+                        </IconButton>
+                        <Typography variant="h6" mx={2}>
+                          {childrenCount}
+                        </Typography>
+                        <IconButton onClick={handleIncrement(setChildrenCount, childrenCount)}>
+                          <AddIcon />
+                        </IconButton>
+                      </Box>
+                    </Box>
+                    <Box mt={4} textAlign="center">
+                      <Button variant="contained" color="primary" onClick={handleModalClose}>
+                        Submit
+                      </Button>
+                    </Box>
+                  </Box>
+                </Modal>
+              </Box>
+              <FormControl sx={{ width: '150px', marginTop: '4px' }} >
+                <InputLabel id="demo-simple-select-label">Meal Plan</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Meal"
+                >
+                  <MenuItem value={10}>Ten</MenuItem>
+                  <MenuItem value={20}>Twenty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+            <TableContainer sx={{ width: '100%', marginTop: '1rem' }} component={Paper}>
+              <Table>
+                <TableHead >
+                  <TableRow >
+                    <TableCell>Room Type</TableCell>
+                    <TableCell>Availability</TableCell>
+                    <TableCell>Price</TableCell>
+                    <TableCell>Quantity</TableCell>
+                    <TableCell>Addons</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {roomData.map((room, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{room.type}</TableCell>
+                      <TableCell>{room.availability < 10 ? `0${room.availability}` : room.availability}</TableCell>
+                      <TableCell>
+                        <TextField
+                         sx={{ width: '100px' }}
+                          hiddenLabel
+                          type="number"
+                          defaultValue={room.price}
+                          variant="outlined"
+                        />
+                      </TableCell>
+                      <TableCell>
+                      <TextField 
+                                    type="number" 
+                                    InputProps={{ inputProps: { min: 0, max: room.availability } }}
+                                    size="small"
+                                />
+                      </TableCell>
+                      <TableCell>
+                        <IconButton color="primary">
+                          <AddCircleOutlineIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+          <Box sx={{ width: '25%', margin: '12px', marginLeft: '2.5rem' }}>
+            <FormControl ons sx={{ width: '100%', marginTop: '3rem' }}>
+              <Typography variant='h6' gutterBottom>Guest Details</Typography>
+              <TextField
+                id="outlined-basic"
+                label="Phone"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                type='number'
+                name='phone_number'
+              />
+
+              <Button
+                variant='outlined'
+                fullWidth
+                margin="normal"
+              >
+                Attach Id
+              </Button>
+
+              <TextField
+                id="outlined-basic"
+                label="Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                name='guest_name'
+              />
+
+              <TextField
+                id="outlined-basic"
+                label="Email-Id"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                name='address'
+              />
+
+              <TextField
+                id="outlined-basic"
+                label="Reference Number"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                name='reference_number'
+              />
+
+              <ButtonGroup
+                fullWidth
+                margin="normal"
+              >
+                <Button variant="outlined">Male</Button>
+                <Button variant="outlined">Female</Button>
+                <Button variant="outlined">Others</Button>
+              </ButtonGroup>
+
+              <Button
+                sx={{
+
+                  width: "100%",
+                  marginTop: "20px",
+                  marginBottom: "20px"
+                }}
+                variant="contained"
+                fullWidth
+                margin="normal"
+                onSubmit={checkInUser}
+              >
+                Show More
+              </Button>
+
+              <Typography variant='h6' gutterBottom>Booking Info</Typography>
+
+              <Box sx={{ width: '100%', marginTop: 2 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <FormControl sx={{ width: '100%', marginTop: '4px' }} >
+                      <InputLabel id="demo-simple-select-label">Source</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Meal"
+                      >
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <FormControl sx={{ width: '100%', marginTop: '4px' }} >
+                      <InputLabel id="demo-simple-select-label">Food Choice</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Meal"
+                      >
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <FormControl sx={{ width: '100%', marginTop: '4px' }} >
+                      <InputLabel id="demo-simple-select-label">Mode of Travel </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Meal"
+                      >
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField placeholder='Remarks'></TextField>
+                  </Grid>
+                </Grid>
+              </Box>
+            </FormControl>
+            <Box sx={{ width: '100%', marginTop: '1rem', marginLeft: '5px' }}>
+              <ButtonGroup sx={{ display: 'flex', gap: '20px', justifyContent: 'center' }} >
+                <Button sx={{ backgroundColor: '' }} size='small' variant='contained'>Check In<Switch /></Button>
+                <Button size='small'>Apply Discount</Button>
+              </ButtonGroup>
+            </Box>
+          </Box>
+        </Box>
+        <Box sx={{ display: 'flex', width: '99%', }}>
+          <BottomNavigation sx={{ width: '70%', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
+            <Typography><Switch />Price Incl. Taxes</Typography>
+            <Stack>
+              <Typography variant='body1'>Room Total:</Typography>
+              <Typography variant='h6'>00</Typography>
+            </Stack>
+            <Stack>
+              <Typography variant='body1'>Discount:</Typography>
+              <Typography variant='h6'>00</Typography>
+            </Stack>
+            <Stack>
+              <Typography variant='body1'>Sub Total:</Typography>
+              <Typography variant='h6'>00</Typography>
+            </Stack>
+            <Stack>
+              <Typography variant='body1'>Tax:</Typography>
+              <Typography variant='h6'>00</Typography>
+            </Stack>
+            <Stack>
+              <Typography variant='body1'> Total:</Typography>
+              <Typography variant='h6'>00</Typography>
+            </Stack>
+            <Stack>
+              <Typography variant='body1'>Total Deposit:</Typography>
+              <Typography variant='h6'>00</Typography>
+            </Stack>
+            <Stack>
+              <Typography variant='body1'>Balance Due:</Typography>
+              <Typography variant='h6'>00</Typography>
+            </Stack>
+
+          </BottomNavigation>
+          <BottomNavigation sx={{ width: '30%' }}>
+            <Stack direction="row" spacing={1} sx={{ width: '100%' }} >
+              <Button sx={{ width: '50%' }} variant='contained' size='small'>Take Payment</Button>
+              <Button sx={{ width: '50%' }} variant='contained' size='small' >Create Booking</Button>
+            </Stack>
+          </BottomNavigation>
+        </Box>
+      </Box>
+
+
+    </>
+  );
+}
