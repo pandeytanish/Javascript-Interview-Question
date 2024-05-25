@@ -1,0 +1,552 @@
+import * as React from 'react';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+import { DateTimeRangePicker } from '@mui/x-date-pickers-pro/DateTimeRangePicker';
+import { Button, ButtonGroup, FormControl, Typography, Stack } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableBody from '@mui/material/TableBody';
+import IconButton from '@mui/material/IconButton';
+import Switch from '@mui/material/Switch';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import InputLabel from '@mui/material/InputLabel';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Modal from '@mui/material/Modal';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  height: 350,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 1
+};
+
+const roomData = [
+  { type: 'Suite', availability: 1, price: 5000 },
+  { type: 'Dormitory', availability: 9, price: 1000 },
+  { type: 'Executive', availability: 5, price: 3200 },
+  { type: 'Super Deluxe', availability: 4, price: 2800 },
+  { type: 'Deluxe', availability: 10, price: 2200 },
+];
+
+export default function NewBooking() {
+
+  const [open, setOpen] = useState(false);
+  const [adultCount, setAdultCount] = useState(0);
+  const [childrenCount, setChildrenCount] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleIncrement = (setter, value) => () => setter(value + 1);
+  const handleDecrement = (setter, value) => () => setter(value > 0 ? value - 1 : 0);
+
+  useEffect(() => {
+    setTotal(adultCount + childrenCount);
+  }, [adultCount, childrenCount]);
+
+  useEffect(() => {
+    if (!open) {
+      setTotal(adultCount + childrenCount);
+    }
+  }, [open]);
+  const handleModalClose = () => {
+    setOpen(false);
+    setTotal(adultCount + childrenCount);
+
+  };
+
+  // const checkInUser = (event) => {
+  //   event.preventDefault() ;
+  //   const phone_number = event.target.phone_number.value;
+  //   const guest_name = event.target.guest_name.value;
+  //   const address = event.target.address.value;
+
+  //   axios.post('http://192.168.29.170:3000/check_ins' , {
+  //     phone_number,
+  //     guest_name,
+  //     address,
+  //   })
+  //   .then (response => {
+  //     console.log(response);
+  //   })
+  //   .catch (error => {
+  //     console.log(error);
+  //   })
+  // }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Collect all form data
+    const formData = new FormData(event.target);
+    const formDataObject = Object.fromEntries(formData.entries());
+
+    // Send the data to the API
+    axios.post('http://192.168.29.170:3000/check_ins', formDataObject)
+      .then(response => {
+        console.log(response);
+        // Handle success
+      })
+      .catch(error => {
+        console.log(error);
+        // Handle error
+      });
+  };
+
+  const [showMore, setShowMore] = useState(false);
+
+  const handleToggle = () => {
+    setShowMore(!showMore);
+  };
+
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <Box sx={{height : '640px'}}>
+          <Box sx={{ display: 'flex', width: "99%", margin: '0.2rem', height : '580px' }}>
+            <Box sx={{ p: 1, width: "70%"  }}>
+              <Typography variant='h5'>Create Booking</Typography>
+              <Box sx={{ height: '70px', width: '100%', borderTop: '4px solid blue', paddingTop : '8px',  marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} >
+               <Box  sx={{width : '50%' }}>
+               <LocalizationProvider   dateAdapter={AdapterDayjs}>
+                  <DemoContainer sx={{ padding : '0px',}} components={['DateTimeRangePicker']}>
+                    <DateTimeRangePicker localeText={{ start: 'Check-in', end: 'Check-out' }} />
+                  </DemoContainer>
+                </LocalizationProvider>
+               </Box>
+                <Box sx={{width : '40%' , display : 'flex' , gap : 6 }}>
+                  <TextField
+                    label="Number Of Guests"
+                    onClick={handleOpen}
+                    
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                    value={`Adults: ${adultCount} | Children: ${childrenCount} `}
+                  />
+                  <Modal open={open} onClose={handleClose}>
+                    <Box sx={style}>
+                      <Typography variant="h6" component="h2" gutterBottom>
+                        Counter Modal
+                      </Typography>
+                      <Box mt={2}>
+                        <Typography variant="subtitle1" gutterBottom>
+                          Adults
+                        </Typography>
+                        <Box display="flex" alignItems="center">
+                          <IconButton onClick={handleDecrement(setAdultCount, adultCount)}>
+                            <RemoveIcon />
+                          </IconButton>
+                          <Typography variant="h6" mx={2}>
+                            {adultCount}
+                          </Typography>
+                          <IconButton onClick={handleIncrement(setAdultCount, adultCount)}>
+                            <AddIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <Box mt={2}>
+                        <Typography variant="subtitle1" gutterBottom>
+                          Children
+                        </Typography>
+                        <Box display="flex" alignItems="center">
+                          <IconButton onClick={handleDecrement(setChildrenCount, childrenCount)}>
+                            <RemoveIcon />
+                          </IconButton>
+                          <Typography variant="h6" mx={2}>
+                            {childrenCount}
+                          </Typography>
+                          <IconButton onClick={handleIncrement(setChildrenCount, childrenCount)}>
+                            <AddIcon />
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <Box mt={4} textAlign="center">
+                        <Button variant="contained" color="primary" onClick={handleModalClose}>
+                          Submit
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Modal>
+                  <FormControl sx={{ width: '150px' }} >
+                  <InputLabel id="demo-simple-select-label">Meal Plan</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Meal"
+                  >
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+                </Box>
+              
+              </Box>
+              <TableContainer sx={{ width: '100%' , marginTop: '2rem' , height : '335px' ,    '&::-webkit-scrollbar': {
+          width: '0px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: 'rgba(0,0,0,0.1)',
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+          background: 'rgba(0,0,0,0.3)',
+        },
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',}} component={Paper}>
+                <Table>
+      <TableHead sx={{ height: '50px' }}> {/* Reduced height */}
+        <TableRow>
+          <TableCell sx={{ padding: '6px' , color: 'gray' }}>Room Type</TableCell> {/* Reduced padding */}
+          <TableCell sx={{ padding: '6px' , color: 'gray' }}>Availability</TableCell>
+          <TableCell sx={{ padding: '6px' , color: 'gray' }}>Price</TableCell>
+          <TableCell sx={{ padding: '6px' , color: 'gray' }}>Quantity</TableCell>
+          <TableCell sx={{ padding: '6px' , color: 'gray' }}>Addons</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {roomData.map((room, index) => (
+          <TableRow key={index} sx={{ height: '50px' }}> {/* Reduced height */}
+            <TableCell sx={{ padding: '8px' }}>{room.type}</TableCell> {/* Reduced padding */}
+            <TableCell sx={{ padding: '8px' }}>{room.availability < 10 ? `0${room.availability}` : room.availability}</TableCell>
+            <TableCell sx={{ padding: '8px' }}>
+              <TextField
+                sx={{ width: '100px' }}
+                hiddenLabel
+                type="number"
+                defaultValue={room.price}
+                variant="outlined"
+                size="small"
+              />
+            </TableCell>
+            <TableCell sx={{ padding: '4px' }}>
+              <TextField
+                type="number"
+                InputProps={{ inputProps: { min: 0, max: room.availability } }}
+                size="small"
+              />
+            </TableCell>
+            <TableCell sx={{ padding: '4px' }}>
+              <IconButton color="primary">
+                <AddCircleOutlineIcon />
+              </IconButton>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+              </TableContainer>
+            </Box>
+            <Box sx={{ width: '25%', margin: '12px', marginLeft: '2.5rem' }}>
+              <form >
+                {/* onSubmit={checkInUser} */}
+                <FormControl sx={{ width: '100%', marginTop: '2rem' , overflowY: 'scroll', height: '470px' ,  '&::-webkit-scrollbar': {
+          width: '0px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: 'rgba(0,0,0,0.1)',
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+          background: 'rgba(0,0,0,0.3)',
+        },
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none', }}>
+                  <Typography variant='h6' gutterBottom >Guest Details</Typography>
+                  <TextField
+                    id="outlined-basic"
+                    label="Phone"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    type='number'
+                    name='phone_number'
+                    sx={{marginBottom : '16px'}}
+                    size='small'
+                  />
+                  <Button
+                    variant='outlined'
+                    fullWidth
+                    margin="normal"
+                    size='small'
+                    sx={{marginBottom : '16px'}}
+                  >
+                    Attach Id
+                  </Button>
+
+                  <TextField
+                    id="outlined-basic"
+                    label="Name"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name='guest_name'
+                    size='small'
+                    sx={{marginBottom : '16px'}}
+                  />
+
+                  <TextField
+                    id="outlined-basic"
+                    label="Email-Id"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name='address'
+                    size='small'
+                    sx={{marginBottom : '16px'}}
+                  />
+
+                  <TextField
+                    id="outlined-basic"
+                    label="Reference Number"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name='reference_number'
+                    size='small'
+                    sx={{marginBottom : '16px'}}
+                  />
+
+                  <ButtonGroup
+                    fullWidth
+                    margin="normal"
+                    sx={{marginBottom : '16px'}}
+                  >
+                    <Button variant="outlined">Male</Button>
+                    <Button variant="outlined">Female</Button>
+                    <Button variant="outlined">Others</Button>
+                  </ButtonGroup>
+
+                  <Button
+                    sx={{
+                      width: "50%",
+                      marginTop: "10px",
+                      marginBottom: "10px",
+                      marginX: '4.5rem'
+                      
+                    }}
+                    variant="contained"
+                    size='small'
+                    onClick={handleToggle}
+                  >
+                    {showMore ? 'Show Less' : 'Show More'}
+                  </Button>
+
+                  {showMore && (
+                    <>
+                      <TextField
+                        id="outlined-basic"
+                        label="Address"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        name='address'
+                        sx={{marginBottom : '18px'}}
+                        size='small'
+                      />
+                      <Stack direction='row' spacing={2}>
+                        <TextField
+                          id="outlined-error-helper-text"
+                          label="Postal Code"
+                          size='small'
+                          sx={{marginBottom : '16px'}}
+                        />
+                        <TextField
+                          id="outlined-error-helper-text"
+                          label="City"
+                          size='small'
+                          sx={{marginBottom : '16px'}}
+                        />
+                      </Stack>
+
+                      <TextField
+                       sx={{marginBottom : '18px'}}
+                        id="outlined-basic"
+                        label="Country"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        name='address'
+                        size='small'
+                      />
+
+                      <Stack  sx={{marginBottom : '18px'}} direction='row' spacing={2}>
+                        <TextField
+                        fullWidth
+                          id="outlined-error-helper-text"
+                          label="DOB"
+                          type='date'
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          size='small'
+                        />
+                        <TextField
+                        fullWidth
+                          id="outlined-error-helper-text"
+                          label="Date of Anniversary"
+                          type='date'
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          size='small'
+                        />
+                      </Stack>
+                      <Typography  sx={{marginTop : '10px'}} variant='h6' gutterBottom>Company Detail</Typography>
+                      <Stack  sx={{marginBottom : '18px'}} direction='row' spacing={2}>
+                        <TextField
+                          id="outlined-error-helper-text"
+                          label="Company Name"
+                          size='small'
+                          sx={{marginBottom : '16px'}}
+                        />
+                        <TextField
+                          id="outlined-error-helper-text"
+                          label="Designation"
+                          size='small'
+                          sx={{marginBottom : '16px'}}
+                        />
+                      </Stack>
+
+                      <TextField
+                        id="outlined-error-helper-text"
+                        label="Company GSTIN"
+                        size='small'
+                      />
+                    </>
+                  )}
+                  <Typography  sx={{marginTop : '14px'}} variant='h6' gutterBottom>Booking Info</Typography>
+                  <Box sx={{ width: '100%', marginTop: 1 }}>
+                    <Button onClick={handleOpen} fullWidth variant='outlined' sx={{ marginBottom: '18px' }}>Select Rooms</Button>
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        <FormControl sx={{ width: '100%', marginTop: '4px' }} >
+                          <InputLabel id="demo-simple-select-label">Source</InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            label="Source"
+                            name="source"
+                            size='small'
+                          >
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl sx={{ width: '100%', marginTop: '4px' }} >
+                          <InputLabel id="demo-simple-select-label">Food Choice</InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            label="Food Choice"
+                            name="food_choice"
+                            size='small'
+                          >
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+
+                      <Grid item xs={6}>
+                        <FormControl sx={{ width: '100%', marginTop: '4px' }} >
+                          <InputLabel id="demo-simple-select-label">Mode of Travel</InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            label="Mode of Travel"
+                            name="mode_of_travel"
+                            size='small'
+                          >
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField size='small' placeholder='Remarks' name="remarks" fullWidth margin="normal" sx={{marginTop : '4px'}}></TextField>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </FormControl>
+              </form>
+              <Box sx={{ width: '100%', marginTop: '0.4rem', marginLeft: '5px' }}>
+                <ButtonGroup sx={{ display: 'flex', gap: '20px', justifyContent: 'center' }} >
+                  <Button sx={{ backgroundColor: '' }} size='small' variant='contained'>Check In<Switch /></Button>
+                  <Button size='small'>Apply Discount</Button>
+                </ButtonGroup>
+              </Box>
+            </Box>
+          </Box>
+          <Box sx={{ display: 'flex', width: '99%',  }}>
+            <BottomNavigation sx={{ width: '70%', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
+              <Typography variant='body2'><Switch />Price Incl. Taxes</Typography>
+              <Stack>
+                <Typography sx={{color : 'gray'}} variant='body2'>Room Total:</Typography>
+                <Typography sx={{fontWeight : 'bold' , fontSize : '18px'}} variant='body1'>00</Typography>
+              </Stack>
+              <Stack>
+                <Typography sx={{color : 'gray'}} variant='body2'>Discount:</Typography>
+                <Typography color='lightskyblue' sx={{fontWeight : 'bold' , fontSize : '18px'}} variant='body1'>00</Typography>
+              </Stack>
+              <Stack>
+                <Typography sx={{color : 'gray'}} variant='body2'>Sub Total:</Typography>
+                <Typography sx={{fontWeight : 'bold' , fontSize : '18px'}} variant='body1'>00</Typography>
+              </Stack>
+              <Stack>
+                <Typography sx={{color : 'gray'}} variant='body2'>Tax:</Typography>
+                <Typography sx={{fontWeight : 'bold' , fontSize : '18px'}} variant='body1'>00</Typography>
+              </Stack>
+              <Stack>
+                <Typography sx={{color : 'gray'}} variant='body2'> Total:</Typography>
+                <Typography sx={{fontWeight : 'bold' , fontSize : '18px'}} variant='body1'>00</Typography>
+              </Stack>
+              <Stack>
+                <Typography sx={{color : 'gray'}} variant='body2'>Total Deposit:</Typography>
+                <Typography sx={{fontWeight : 'bold' , fontSize : '18px'}} variant='body1'>00</Typography>
+              </Stack>
+              <Stack>
+                <Typography sx={{color : 'gray'}} variant='body2'>Balance Due:</Typography>
+                <Typography sx={{fontWeight : 'bold' , fontSize : '18px'}} variant='body1'>00</Typography>
+              </Stack>
+
+            </BottomNavigation>
+            <BottomNavigation sx={{ width: '30%' }}>
+              <Stack direction="row" spacing={1} sx={{ width: '100%' }} >
+                <Button sx={{ width: '50%' }} variant='contained' size='small'>Take Payment</Button>
+                <Button sx={{ width: '50%' }} variant='contained' size='small' type='submit' >Create Booking</Button>
+              </Stack>
+            </BottomNavigation>
+          </Box>
+        </Box>
+
+      </form>
+
+
+    </>
+  );
+}
